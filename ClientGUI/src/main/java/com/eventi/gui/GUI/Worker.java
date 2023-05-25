@@ -30,7 +30,7 @@ public class Worker extends SwingWorker<String, Void> {
         if (!isCancelled()) {
             try {
 
-                Socket Socket = new Socket("localhost", 6000);
+                Socket Socket = new Socket("localhost", 6001);
                 BufferedReader Reader = new BufferedReader(new InputStreamReader(Socket.getInputStream()));
                 BufferedWriter Writer = new BufferedWriter(new OutputStreamWriter(Socket.getOutputStream()));
                 String command;

@@ -23,7 +23,6 @@ public class Client extends JFrame {
 
         super("Gestione Eventi Client");
         this.setPreferredSize(new Dimension(700, 420));
-        this.setResizable(false);
         Listener myListener = new Listener(this);
 
 

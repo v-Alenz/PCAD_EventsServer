@@ -28,12 +28,12 @@ public class EventiMySql {
         }
     }
 
-    private Connection connectDatabase() {
+    protected Connection connectDatabase() {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(connectionUrl, dbUser, dbPasswd);
         } catch (SQLException e) {
-            System.out.println(e);
+            return conn;
         }
         return conn;
     }
@@ -142,9 +142,6 @@ public class EventiMySql {
                 }
             }
         }
-        for (Evento evento : list.values()) {
-            System.out.println( evento.toString()); 
-        }
         return list;
     }
 
@@ -172,14 +169,4 @@ public class EventiMySql {
         }
     }
 
-
-    // public static void /* TEST */ main(String[] args) {
-    //     var sql = new EventiMySql();
-    //     var conn = sql.connectDatabase();
-    //     // sql.eventCreate("che fine ha fatto mike bongiorno?", 1000);
-    //     // sql.eventBook("cazzi", 10);
-    //     // sql.eventAdd("cazzi", 100);
-    //     // sql.eventeDelete("che fine ha fatto mike bongiorno?");
-    //     sql.eventGetList();
-    // }
 }

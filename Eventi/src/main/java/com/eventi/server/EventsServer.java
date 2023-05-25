@@ -57,7 +57,7 @@ public class EventsServer{
     }
     public static void main(String[] args) {
         printPresentation();
-        EventsServer server = new EventsServer(6000);
+        EventsServer server = new EventsServer(6001);
         server.start();
     }
 

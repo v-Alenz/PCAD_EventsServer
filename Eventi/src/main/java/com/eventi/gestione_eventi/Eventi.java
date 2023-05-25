@@ -24,14 +24,11 @@ public class Eventi extends Subscriber implements Runnable {
 
     private Map<String,Evento> eventList;
     private Map<String, LinkedList<BookSeatsEventMessage>> pendigRequestsQueue;
-    private EventiMySql sql;
 
 
     public Eventi() {
-        sql = new EventiMySql();
+        this.eventList = new TreeMap<>();
         pendigRequestsQueue = new HashMap<>();
-        eventList = new TreeMap<>();
-        eventList = sql.eventGetList();
     }
 
     public void crea(CreateEventMessage eventMessage) {
@@ -40,9 +37,7 @@ public class Eventi extends Subscriber implements Runnable {
         if (this.containsEvent(name))
             sendResponse(false, eventMessage.getClientId());
         try {
-            // eventList.put(name,new Evento(name, seats));
-            sql.eventCreate(name, seats);
-            eventList = sql.eventGetList();
+            eventList.put(name,new Evento(name, seats));
         } catch (Exception e) {
             sendResponse(false, eventMessage.getClientId());
         }
@@ -56,9 +51,7 @@ public class Eventi extends Subscriber implements Runnable {
         if(!this.containsEvent(name))
             sendResponse(false, eventMessage.getClientId());
         try {
-            // eventList.get(name).addSeats(seats);
-            sql.eventAdd(name, seats);
-            eventList = sql.eventGetList();
+            eventList.get(name).addSeats(seats);
         } catch (Exception e) {
             sendResponse(false, eventMessage.getClientId());
         }
@@ -78,9 +71,7 @@ public class Eventi extends Subscriber implements Runnable {
         if(!this.containsEvent(name))
             sendResponse(false, eventMessage.getClientId());
         try {
-            // eventList.get(name).removeSeats(seats);
-            sql.eventBook(name, seats);
-            eventList = sql.eventGetList();
+            eventList.get(name).removeSeats(seats);
         } catch (ArgumentOutOfBoundException e) {
             if (!pendigRequestsQueue.containsKey(name)) {
                 pendigRequestsQueue.put(name, new LinkedList<>());
@@ -106,9 +97,7 @@ public class Eventi extends Subscriber implements Runnable {
         if(!this.containsEvent(name))
             sendResponse(false, eventMessage.getClientId());
         try {
-            // eventList.remove(name);       
-            sql.eventeDelete(name);
-            eventList = sql.eventGetList();
+            eventList.remove(name);       
         } catch (Exception e) {
             sendResponse(false, eventMessage.getClientId());
         }
@@ -151,7 +140,7 @@ public class Eventi extends Subscriber implements Runnable {
             SubscribeCons("topicEventMessages");   //Topic da cui riceveremo i messaggi dai server thread
             SubscribeProd("topicEventsBroadcast"); //Topic sulla quale facciamo il broadcast della lista eventi
             SubscribeCons("topicEventsBroadcast"); //Sottoscrivo sia come producer che consumer per consentire solo peeker su questo topic
-            produce("topicEventsBroadcast", new BroadcastEventsListMesage(eventList));
+            produce("topicEventsBroadcast", new BroadcastEventsListMesage(new HashMap<>()));
             SubscribeProd("topicFatalError");      //Topic su cui comunico al main che il thread non e' piu in grado di continuare l'esecuzione
         } catch (Exception e) {
             System.out.println("unable tu initialize topics: " + e.getMessage());

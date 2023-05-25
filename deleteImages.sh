@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker image rm event_mysql:dev event_server:dev
+docker image rm event-mysql:dev event-server:dev
