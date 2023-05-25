@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  
+  event-mysql:
+    build: ./Database/ 
+    image: event-mysql:dev
+    container_name: event-mysql
+    ports:
+      - 3306:3306
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: threadementi
+    cap_add:
+      - SYS_NICE
+
+  event-server:
+    build: ./Eventi/
+    image: event-server:dev
+    container_name: event-server
+    ports: 
+      - 6000:6000
+    depends_on:
+      - event-mysql
