@@ -3,7 +3,6 @@ package com.eventi.gui.GUI;
 import java.awt.*;
 import javax.swing.*;
 
-
 public class Client extends JFrame {
 
     JButton lista;
@@ -17,12 +16,12 @@ public class Client extends JFrame {
     JLabel stateLabel;;
     JLabel postiLabel;
     JLabel eventoLabel;
-    
+
     public Client() {
 
 
         super("Gestione Eventi Client");
-        this.setPreferredSize(new Dimension(700, 420));
+        this.setPreferredSize(new Dimension(800, 350));
         Listener myListener = new Listener(this);
 
 
@@ -43,17 +42,15 @@ public class Client extends JFrame {
         scrollableEventBox = new JScrollPane(eventBox);
         scrollableEventBox.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  
 
-        stateLabel = new JLabel("Stato : In attesa di prenotazioni");
-        stateLabel.setAlignmentX(BoxLayout.PAGE_AXIS);
+        
         
         outputpanel.add(leftLabel);
         outputpanel.add(scrollableEventBox);
-       
+        outputpanel.add(lista,Panel.RIGHT_ALIGNMENT);
        
 
         JPanel inputpanel = new JPanel();
-        inputpanel.setLayout( new BoxLayout(inputpanel,BoxLayout.Y_AXIS));
-       
+        inputpanel.setLayout( new BoxLayout(inputpanel,BoxLayout.PAGE_AXIS));
         prenota = new JButton("Prenota");
         prenota.setActionCommand("prenota");
         prenota.addActionListener(myListener);
@@ -71,8 +68,13 @@ public class Client extends JFrame {
         annulla.setEnabled(false);
         eventoField = new TextField();
         postiField = new TextField();
-        
-        inputpanel.add(lista);
+        postiField.setPreferredSize(new Dimension(170, 150));
+        postiField.setMaximumSize(new Dimension(10000, 200));
+        eventoField.setPreferredSize(new Dimension(170, 150));
+        eventoField.setMaximumSize(new Dimension(10000, 200));
+
+
+       
         inputpanel.add(eventoLabel);
         inputpanel.add(eventoField);
         inputpanel.add(postiLabel);
@@ -80,14 +82,25 @@ public class Client extends JFrame {
         inputpanel.add(prenota);
         inputpanel.add(annulla);
 
-        getContentPane().setLayout(new FlowLayout());
-        getContentPane().add(inputpanel);
-       
-        getContentPane().add(new JSeparator());
-        getContentPane().add(new JSeparator());
 
-        getContentPane().add(outputpanel);
-        getContentPane().add(stateLabel);
+        JPanel statepanel = new JPanel();
+        statepanel.setLayout(new BoxLayout(statepanel, BoxLayout.Y_AXIS));
+        stateLabel= new JLabel("Stato : in attesa di prenotazioni");
+        stateLabel.setAlignmentX(Panel.CENTER_ALIGNMENT);
+        
+       
+       
+        statepanel.add(stateLabel);
+
+        getContentPane().setLayout( new BorderLayout(10,10));
+       
+        getContentPane().add(inputpanel,BorderLayout.WEST);
+    
+        getContentPane().add(outputpanel,BorderLayout.CENTER);
+       
+        getContentPane().add(statepanel,BorderLayout.SOUTH);   
+      
+
 
         pack();
         setVisible(true);
