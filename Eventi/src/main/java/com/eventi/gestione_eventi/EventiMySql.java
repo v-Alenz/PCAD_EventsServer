@@ -38,17 +38,6 @@ public class EventiMySql {
         return conn;
     }
 
-    private void disconnectDatabase(Connection conn) {
-        if (conn == null) {
-            return;
-        }
-        try {
-            conn.close();
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-    }
-
     public void eventCreate(String name, Integer max_seats) {
         Connection conn = connectDatabase();
         if (conn == null)

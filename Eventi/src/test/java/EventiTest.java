@@ -1,5 +1,4 @@
 import org.junit.Test;
-import com.eventi.gestione_eventi.*;
 
 public class EventiTest {
     @Test

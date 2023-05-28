@@ -39,11 +39,6 @@ public class ClientWorker extends SwingWorker<String, Void> {
                 BufferedWriter Writer = new BufferedWriter(new OutputStreamWriter(Socket.getOutputStream()));
                 String command;
                 
-                String crea1 = "{\"role\": \"ADMIN\",\"command\": {\"type\": \"CREATE\",\"name\": \"Concerto Madonna\",\"seats\": 345}}";
-                String crea2 = "{\"role\": \"ADMIN\",\"command\": {\"type\": \"CREATE\",\"name\": \"Spettacolo Frozen\",\"seats\": 645}}";
-                String crea3 = "{\"role\": \"ADMIN\",\"command\": {\"type\": \"CREATE\",\"name\": \"Mostra\",\"seats\": 575}}";
-                String crea4 = "{\"role\": \"ADMIN\",\"command\": {\"type\": \"CREATE\",\"name\": \"Alberobello ma brutto\",\"seats\": 7645}}";
-                String crea5 = "{\"role\": \"ADMIN\",\"command\": {\"type\": \"CREATE\",\"name\": \"MOOSECA?\",\"seats\": 6345}}";
 
                 if (this.bookFunction) {
                     command = "{\"role\": \"USER\",\"command\": {\"type\": \"BOOK\",\"name\":" + this.nomeEvento
