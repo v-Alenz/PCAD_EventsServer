@@ -22,6 +22,12 @@ import javax.swing.SwingUtilities;
 public class AdminFrame extends JFrame {
 
     public JTabbedPane tabFunc;
+    public JTextField nomeField ;
+    public JTextField postiField;
+    JTextField nomeAddField;
+    JTextField postiAddField;
+    JTextField nomeRemField;
+    JTextArea eventBox;
 
     public AdminFrame() {
 
@@ -35,9 +41,9 @@ public class AdminFrame extends JFrame {
         JPanel creaPanel = new JPanel();
         creaPanel.setLayout(new BoxLayout(creaPanel, BoxLayout.Y_AXIS));
         JLabel nomeLabel = new JLabel("Inserire il nome dell'evento che si intende creare :");
-        JTextField nomeField = new JTextField();
+        nomeField = new JTextField();
         JLabel postiLabel = new JLabel("Inserire i posti per l'evento che si intende creare :");
-        JTextField postiField = new JTextField();
+        postiField = new JTextField();
         JButton creaButton = new JButton("Crea Evento");
         creaButton.setActionCommand("crea");
         creaButton.addActionListener(myListener);
@@ -57,15 +63,15 @@ public class AdminFrame extends JFrame {
         creaPanel.add(postiLabel);
         creaPanel.add(postiField);
         creaPanel.add(creaButton);
-        tabFunc.addTab("Crea", creaPanel);
+        tabFunc.addTab("Crea Evento", creaPanel);
 
         /////////////////////////////// Pannello aggiungi//////////////////////////////////////////////////////////////////////////
         JPanel aggiungiPanel = new JPanel();
         aggiungiPanel.setLayout(new BoxLayout(aggiungiPanel, BoxLayout.Y_AXIS));
         JLabel nomeAddLabel = new JLabel("Inserire il nome dell'evento a cui aggiungere i posti :");
-        JTextField nomeAddField = new JTextField();
+        nomeAddField = new JTextField();
         JLabel postiAddLabel = new JLabel("Inserire il numero di posti da aggiungere :");
-        JTextField postiAddField = new JTextField();
+        postiAddField = new JTextField();
         JButton aggiungiButton = new JButton("Aggiungi posti");
         aggiungiButton.setActionCommand("aggiungi");
         aggiungiButton.addActionListener(myListener);
@@ -85,13 +91,13 @@ public class AdminFrame extends JFrame {
         aggiungiPanel.add(postiAddLabel);
         aggiungiPanel.add(postiAddField);
         aggiungiPanel.add(aggiungiButton);
-        tabFunc.add("Aggiungi", aggiungiPanel);
+        tabFunc.add("Aggiungi Posti", aggiungiPanel);
 
         /////////////////////////////// Pannello chiudi//////////////////////////////////////////////////////////////////////////
         JPanel chiudiPanel = new JPanel();
         chiudiPanel.setLayout(new BoxLayout(chiudiPanel, BoxLayout.Y_AXIS));
         JLabel nomeRemLabel = new JLabel("Inserire il nome dell'evento da chiudere :");
-        JTextField nomeRemField = new JTextField();
+        nomeRemField = new JTextField();
 
         JButton chiudButton = new JButton("Chiudi Evento");
         chiudButton.setActionCommand("chiudi");
@@ -106,7 +112,7 @@ public class AdminFrame extends JFrame {
         chiudiPanel.add(nomeRemLabel);
         chiudiPanel.add(nomeRemField);
         chiudiPanel.add(chiudButton);
-        tabFunc.add("Chiudi", chiudiPanel);
+        tabFunc.add("Chiudi Evento", chiudiPanel);
 
         /////////////////////////////// Pannello output//////////////////////////////////////////////////////////////////////////
         JPanel outPanel = new JPanel();
@@ -114,7 +120,7 @@ public class AdminFrame extends JFrame {
         JButton stampa = new JButton("Stampa lista eventi");
         stampa.setActionCommand("stampa");
         stampa.addActionListener(myListener);
-        JTextArea eventBox = new JTextArea();
+        eventBox = new JTextArea();
         JScrollPane scrollableEventBox = new JScrollPane(eventBox);
         scrollableEventBox.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         eventBox.setEditable(false);
