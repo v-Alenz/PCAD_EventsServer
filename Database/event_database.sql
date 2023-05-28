@@ -23,7 +23,7 @@ INSERT INTO `events` (
 ) VALUES ( "Benvenuti nella cucina di Iginio Massari" , 12, 30);
 INSERT INTO `events` (
     `name`, `seats`, `max_seats`
-) VALUES ( "Gero Caldarelli, realta' o finzione?" , 350, 350);
+) VALUES ( "Gero Caldarelli, realta' o finzione" , 350, 350);
 INSERT INTO `events` (
     `name`, `seats`, `max_seats`
-) VALUES ( "Wanna Marchi, abile Lupin o commerciante inplacabile?" , 10, 10000);
+) VALUES ( "Wanna Marchi, abile Lupin o commerciante inplacabile" , 10, 10000);

@@ -27,3 +27,15 @@ services:
     depends_on:
       event-mysql:
         condition: service_healthy
+
+
+  event-api-rest:
+    build: ./EventiApiRest
+    image: event-api-rest:dev
+    container_name: event-api-rest
+    ports: 
+      - 8080:8080
+    restart: unless-stopped
+    depends_on:
+      event-mysql:
+        condition: service_healthy
