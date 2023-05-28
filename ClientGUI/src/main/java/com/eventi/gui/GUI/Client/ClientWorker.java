@@ -13,6 +13,10 @@ import org.json.JSONObject;
 
 public class ClientWorker extends SwingWorker<String, Void> {
 
+
+    private static final Integer port = 6000;
+    private static final String host = "localhost";
+
     private String numeroPosti;
     private String nomeEvento;
     private ClientFrame frame;
@@ -30,7 +34,7 @@ public class ClientWorker extends SwingWorker<String, Void> {
         if (!isCancelled()) {
             try {
 
-                Socket Socket = new Socket("localhost", 6001);
+                Socket Socket = new Socket(host, port);
                 BufferedReader Reader = new BufferedReader(new InputStreamReader(Socket.getInputStream()));
                 BufferedWriter Writer = new BufferedWriter(new OutputStreamWriter(Socket.getOutputStream()));
                 String command;

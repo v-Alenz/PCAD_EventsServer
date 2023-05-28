@@ -3,10 +3,7 @@ package com.eventi.gestione_eventi;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Queue;
-import java.util.TreeMap;
 
-import org.w3c.dom.events.Event;
 
 import com.eventi.calvino.Subscriber;
 import com.eventi.messaggi.AddSeatsEventMessage;
@@ -16,7 +13,6 @@ import com.eventi.messaggi.CloseEventMessage;
 import com.eventi.messaggi.CreateEventMessage;
 import com.eventi.messaggi.ErrorResponse;
 import com.eventi.messaggi.EventMessage;
-import com.eventi.messaggi.ListEventMessage;
 import com.eventi.messaggi.OkResponse;
 
 
@@ -24,11 +20,17 @@ public class Eventi extends Subscriber implements Runnable {
 
     private Map<String,Evento> eventList;
     private Map<String, LinkedList<BookSeatsEventMessage>> pendigRequestsQueue;
+    private EventiMySql sql;
 
 
     public Eventi() {
-        this.eventList = new TreeMap<>();
+        sql = new EventiMySql();
         pendigRequestsQueue = new HashMap<>();
+        eventList = sql.eventGetList();
+        if(eventList == null){
+            System.out.println("EVENTS: Unable to contact the Database, Shutting down");
+            System.exit(1);
+        }
     }
 
     public void crea(CreateEventMessage eventMessage) {
@@ -38,6 +40,7 @@ public class Eventi extends Subscriber implements Runnable {
             sendResponse(false, eventMessage.getClientId());
         try {
             eventList.put(name,new Evento(name, seats));
+            sql.eventCreate(name, seats);
         } catch (Exception e) {
             sendResponse(false, eventMessage.getClientId());
         }
@@ -52,6 +55,7 @@ public class Eventi extends Subscriber implements Runnable {
             sendResponse(false, eventMessage.getClientId());
         try {
             eventList.get(name).addSeats(seats);
+            sql.eventAdd(name, seats);
         } catch (Exception e) {
             sendResponse(false, eventMessage.getClientId());
         }
@@ -72,6 +76,7 @@ public class Eventi extends Subscriber implements Runnable {
             sendResponse(false, eventMessage.getClientId());
         try {
             eventList.get(name).removeSeats(seats);
+            sql.eventBook(name, seats);
         } catch (ArgumentOutOfBoundException e) {
             if (!pendigRequestsQueue.containsKey(name)) {
                 pendigRequestsQueue.put(name, new LinkedList<>());
@@ -98,6 +103,7 @@ public class Eventi extends Subscriber implements Runnable {
             sendResponse(false, eventMessage.getClientId());
         try {
             eventList.remove(name);       
+            sql.eventeDelete(name);
         } catch (Exception e) {
             sendResponse(false, eventMessage.getClientId());
         }
@@ -140,20 +146,22 @@ public class Eventi extends Subscriber implements Runnable {
             SubscribeCons("topicEventMessages");   //Topic da cui riceveremo i messaggi dai server thread
             SubscribeProd("topicEventsBroadcast"); //Topic sulla quale facciamo il broadcast della lista eventi
             SubscribeCons("topicEventsBroadcast"); //Sottoscrivo sia come producer che consumer per consentire solo peeker su questo topic
-            produce("topicEventsBroadcast", new BroadcastEventsListMesage(new HashMap<>()));
+            produce("topicEventsBroadcast", new BroadcastEventsListMesage(eventList));
             SubscribeProd("topicFatalError");      //Topic su cui comunico al main che il thread non e' piu in grado di continuare l'esecuzione
         } catch (Exception e) {
             System.out.println("unable tu initialize topics: " + e.getMessage());
-            System.exit(0);
+            System.exit(1);
         }
     }
 
     private void updateEventTopic(){
         try {
+            eventList = sql.eventGetList(); // Prima di modificare il topic in broadcast mi sincronizzo con il database
             produce("topicEventsBroadcast", new BroadcastEventsListMesage(eventList));
             consume("topicEventsBroadcast");
-        } catch (Exception e) {
-            // Comunico al main che sono detonato
+        } catch (Exception e) { 
+            System.out.println("EVENTS: Fatal error syncronizing with the Database. Shuting down");
+            System.exit(1);
         }
     }
 

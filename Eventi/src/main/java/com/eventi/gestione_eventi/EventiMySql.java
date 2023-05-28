@@ -10,7 +10,7 @@ import java.util.TreeMap;
 
 public class EventiMySql {
 
-    private static final String connectionUrl = "jdbc:mysql://localhost:3306/event_database";
+    private static final String connectionUrl = "jdbc:mysql://event-mysql:3306/event_database";
     private static final String dbUser = "root";
     private static final String dbPasswd = "threadementi";
 
@@ -123,7 +123,7 @@ public class EventiMySql {
         Map<String, Evento> list =  new TreeMap<>();
         Connection conn = connectDatabase();
         if (conn == null)
-            return list;
+            return null;
         try {
             conn.setAutoCommit(false);
             PreparedStatement stmt = conn.prepareStatement(querryList);

@@ -35,7 +35,7 @@ public class AdminWorker extends SwingWorker<String, Void> {
         
         try {
             
-            Socket Socket = new Socket("localhost", 6001);
+            Socket Socket = new Socket("localhost", 6000);
             BufferedReader Reader = new BufferedReader(new InputStreamReader(Socket.getInputStream()));
             BufferedWriter Writer = new BufferedWriter(new OutputStreamWriter(Socket.getOutputStream()));
 
