@@ -36,7 +36,14 @@ public class Eventi extends Subscriber implements Runnable {
     public void crea(CreateEventMessage eventMessage) {
         String name = eventMessage.getEventName();
         Integer seats = eventMessage.getEventSeats(); 
-        if (this.containsEvent(name))
+        if (this.containsEvent(name) 
+        || name.contains("?")
+        || name.contains(":")
+        || name.contains(",")
+        || name.contains(".")
+        || name.contains("!")
+        || name.contains("=")
+        || name.contains("\"")) // Avremmo potuto usare il patterna matching ma perche farlo
             sendResponse(false, eventMessage.getClientId());
         try {
             eventList.put(name,new Evento(name, seats));
@@ -61,7 +68,7 @@ public class Eventi extends Subscriber implements Runnable {
         }
         if(pendigRequestsQueue.containsKey(name)){
             var aux = pendigRequestsQueue.get(name).element();
-            if(eventList.get(name).getSeats() > aux.getEventSeats()){
+            if(eventList.get(name).getSeats() >= aux.getEventSeats()){
                 prenota(aux);
             }
         }

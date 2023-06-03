@@ -51,12 +51,13 @@ public class EventiMySql {
             stmt.executeUpdate();
             conn.commit();
         } catch (SQLException e) {
-            System.out.println(e.getSQLState());
+            System.out.println("SQL: Unable to add a new event: " + e.getMessage());
             if (conn != null) {
                 try {
+                    System.out.println("SQL: Rolling database back");
                     conn.rollback();
                 } catch (SQLException ex) {
-                    System.out.println(ex.getSQLState());
+                    System.out.println("SQL: Unable to rollback the database. Current state: " + ex.getSQLState());
                 }
             }
         }
